@@ -5,49 +5,30 @@ class MemoryGame {
         this.matchedCards = [];
         this.moves = 0;
         this.gameStarted = false;
-        this.gameWon = false;
         this.timeElapsed = 0;
         this.timer = null;
         
         this.cardSymbols = ['🔧', '⚡', '🌐', '📡', '🤖', '💡', '🔋', '📱'];
-        this.colors = [
-            'bg-blue-500', 'bg-red-500', 'bg-yellow-500', 'bg-green-500',
-            'bg-blue-600', 'bg-red-600', 'bg-yellow-500', 'bg-green-600'
-        ];
         
         this.initializeEventListeners();
-    }
-    
-    initializeEventListeners() {
-        // Page navigation
-        document.getElementById('startGameBtn').addEventListener('click', () => {
-            this.showGamePage();
-        });
-        
-        document.getElementById('backToClubBtn').addEventListener('click', () => {
-            this.showClubPage();
-        });
-        
-        // Game controls
-        document.getElementById('startChallengeBtn').addEventListener('click', () => {
-            this.startGame();
-        });
-        
-        document.getElementById('playAgainBtn').addEventListener('click', () => {
-            this.startGame();
-        });
-    }
-    
-    showGamePage() {
-        document.getElementById('clubPage').style.display = 'none';
-        document.getElementById('gamePage').style.display = 'block';
         this.resetGame();
     }
     
-    showClubPage() {
-        document.getElementById('gamePage').style.display = 'none';
-        document.getElementById('clubPage').style.display = 'block';
-        this.stopTimer();
+    initializeEventListeners() {
+        const startBtn = document.getElementById('startChallengeBtn');
+        const playAgainBtn = document.getElementById('playAgainBtn');
+        
+        if (startBtn) {
+            startBtn.addEventListener('click', () => {
+                this.startGame();
+            });
+        }
+        
+        if (playAgainBtn) {
+            playAgainBtn.addEventListener('click', () => {
+                this.startGame();
+            });
+        }
     }
     
     resetGame() {
@@ -57,7 +38,6 @@ class MemoryGame {
         this.moves = 0;
         this.timeElapsed = 0;
         this.gameStarted = false;
-        this.gameWon = false;
         this.stopTimer();
         
         this.updateDisplay();
@@ -68,9 +48,9 @@ class MemoryGame {
         this.resetGame();
         this.initializeCards();
         this.renderGameGrid();
+        this.showGameGrid();
         this.gameStarted = true;
         this.startTimer();
-        this.showGameGrid();
     }
     
     initializeCards() {
@@ -78,8 +58,8 @@ class MemoryGame {
         
         this.cardSymbols.forEach((symbol, index) => {
             this.cards.push(
-                { id: index * 2, symbol, color: this.colors[index], matched: false },
-                { id: index * 2 + 1, symbol, color: this.colors[index], matched: false }
+                { id: index * 2, symbol, matched: false },
+                { id: index * 2 + 1, symbol, matched: false }
             );
         });
         
@@ -96,9 +76,9 @@ class MemoryGame {
         
         this.cards.forEach(card => {
             const cardElement = document.createElement('div');
-            cardElement.className = 'memory-tile bg-gray-300';
+            cardElement.className = 'memory-tile';
             cardElement.dataset.cardId = card.id;
-            cardElement.innerHTML = '<span class="text-xl text-gray-600">?</span>';
+            cardElement.innerHTML = '?';
             
             cardElement.addEventListener('click', () => {
                 this.flipCard(card.id);
@@ -119,9 +99,9 @@ class MemoryGame {
         const card = this.cards.find(c => c.id === cardId);
         const cardElement = document.querySelector(`[data-card-id="${cardId}"]`);
         
-        // Flip card
         this.flippedCards.push(cardId);
-        this.updateCardDisplay(cardElement, card, true);
+        cardElement.className = 'memory-tile flipped';
+        cardElement.innerHTML = card.symbol;
         
         if (this.flippedCards.length === 2) {
             this.moves++;
@@ -133,45 +113,34 @@ class MemoryGame {
             
             if (firstCard.symbol === secondCard.symbol) {
                 // Match found
-                this.matchedCards.push(...this.flippedCards);
-                this.flippedCards = [];
-                
-                // Add matched styling
                 setTimeout(() => {
-                    document.querySelector(`[data-card-id="${firstCardId}"]`).classList.add('ring-4', 'ring-yellow-400');
-                    document.querySelector(`[data-card-id="${secondCardId}"]`).classList.add('ring-4', 'ring-yellow-400');
+                    this.matchedCards.push(...this.flippedCards);
+                    this.flippedCards = [];
+                    
+                    const firstElement = document.querySelector(`[data-card-id="${firstCardId}"]`);
+                    const secondElement = document.querySelector(`[data-card-id="${secondCardId}"]`);
+                    firstElement.className = 'memory-tile matched';
+                    secondElement.className = 'memory-tile matched';
+                    
+                    if (this.matchedCards.length === 16) {
+                        this.gameStarted = false;
+                        this.stopTimer();
+                        setTimeout(() => {
+                            this.showWinScreen();
+                        }, 500);
+                    }
                 }, 300);
-                
-                // Check for win
-                if (this.matchedCards.length === 16) {
-                    this.gameWon = true;
-                    this.gameStarted = false;
-                    this.stopTimer();
-                    setTimeout(() => {
-                        this.showWinScreen();
-                    }, 500);
-                }
             } else {
                 // No match
                 setTimeout(() => {
                     this.flippedCards.forEach(id => {
                         const element = document.querySelector(`[data-card-id="${id}"]`);
-                        const card = this.cards.find(c => c.id === id);
-                        this.updateCardDisplay(element, card, false);
+                        element.className = 'memory-tile';
+                        element.innerHTML = '?';
                     });
                     this.flippedCards = [];
                 }, 1000);
             }
-        }
-    }
-    
-    updateCardDisplay(cardElement, card, flipped) {
-        if (flipped || this.matchedCards.includes(card.id)) {
-            cardElement.className = `memory-tile ${card.color}`;
-            cardElement.innerHTML = `<span class="text-2xl text-white">${card.symbol}</span>`;
-        } else {
-            cardElement.className = 'memory-tile bg-gray-300';
-            cardElement.innerHTML = '<span class="text-xl text-gray-600">?</span>';
         }
     }
     
@@ -196,29 +165,47 @@ class MemoryGame {
     }
     
     updateDisplay() {
-        document.getElementById('movesCount').textContent = this.moves;
-        document.getElementById('timeCount').textContent = this.formatTime(this.timeElapsed);
+        const movesElement = document.getElementById('movesCount');
+        const timeElement = document.getElementById('timeCount');
+        
+        if (movesElement) movesElement.textContent = this.moves;
+        if (timeElement) timeElement.textContent = this.formatTime(this.timeElapsed);
     }
     
     showStartScreen() {
-        document.getElementById('startScreen').style.display = 'block';
-        document.getElementById('gameGrid').style.display = 'none';
-        document.getElementById('winScreen').style.display = 'none';
+        const startScreen = document.getElementById('startScreen');
+        const gameGrid = document.getElementById('gameGrid');
+        const winScreen = document.getElementById('winScreen');
+        
+        if (startScreen) startScreen.style.display = 'block';
+        if (gameGrid) gameGrid.style.display = 'none';
+        if (winScreen) winScreen.style.display = 'none';
     }
     
     showGameGrid() {
-        document.getElementById('startScreen').style.display = 'none';
-        document.getElementById('gameGrid').style.display = 'grid';
-        document.getElementById('winScreen').style.display = 'none';
+        const startScreen = document.getElementById('startScreen');
+        const gameGrid = document.getElementById('gameGrid');
+        const winScreen = document.getElementById('winScreen');
+        
+        if (startScreen) startScreen.style.display = 'none';
+        if (gameGrid) gameGrid.style.display = 'grid';
+        if (winScreen) winScreen.style.display = 'none';
     }
     
     showWinScreen() {
-        document.getElementById('startScreen').style.display = 'none';
-        document.getElementById('gameGrid').style.display = 'none';
-        document.getElementById('winScreen').style.display = 'block';
+        const startScreen = document.getElementById('startScreen');
+        const gameGrid = document.getElementById('gameGrid');
+        const winScreen = document.getElementById('winScreen');
         
-        document.getElementById('finalMoves').textContent = this.moves;
-        document.getElementById('finalTime').textContent = this.formatTime(this.timeElapsed);
+        if (startScreen) startScreen.style.display = 'none';
+        if (gameGrid) gameGrid.style.display = 'none';
+        if (winScreen) winScreen.style.display = 'block';
+        
+        const finalMovesElement = document.getElementById('finalMoves');
+        const finalTimeElement = document.getElementById('finalTime');
+        
+        if (finalMovesElement) finalMovesElement.textContent = this.moves;
+        if (finalTimeElement) finalTimeElement.textContent = this.formatTime(this.timeElapsed);
     }
 }
 
@@ -226,7 +213,7 @@ class MemoryGame {
 document.addEventListener('DOMContentLoaded', () => {
     new MemoryGame();
     
-    // Add fade-in animation to cards
+    // Simplified animations for the new layout
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -238,24 +225,15 @@ document.addEventListener('DOMContentLoaded', () => {
     
     document.querySelectorAll('.fade-in').forEach(el => {
         el.style.opacity = '0';
-        el.style.transform = 'translateY(40px)';
-        el.style.transition = 'opacity 0.5s ease-out, transform 0.5s ease-out';
+        el.style.transform = 'translateY(20px)';
+        el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
         observer.observe(el);
     });
-});
-
-// Add some interactive animations
-document.addEventListener('DOMContentLoaded', () => {
-    // Floating animation for emojis
-    const floatingElements = document.querySelectorAll('.animate-float');
-    floatingElements.forEach((el, index) => {
-        el.style.animationDelay = `${index * 0.5}s`;
-    });
     
-    // Add hover effects to cards
-    document.querySelectorAll('.card-feature').forEach(card => {
+    // Enhanced hover effects for simple cards
+    document.querySelectorAll('.simple-card').forEach(card => {
         card.addEventListener('mouseenter', () => {
-            card.style.transform = 'translateY(-8px) scale(1.02)';
+            card.style.transform = 'translateY(-4px) scale(1.02)';
         });
         
         card.addEventListener('mouseleave', () => {

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IoT Memory Challenge - Vicsta</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Game Page -->
+    <div id="gamePage" class="page">
+        <div class="container">
+            <!-- Game Header -->
+            <div class="game-header">
+                <a href="index.html" class="btn-secondary">← Back to Club</a>
+                <div class="game-title">
+                    <h1>IoT Memory Challenge</h1>
+                    <p>Match the technology pairs!</p>
+                </div>
+                <div class="game-stats">
+                    <div>Moves: <span id="movesCount">0</span></div>
+                    <div>Time: <span id="timeCount">0:00</span></div>
+                </div>
+            </div>
+
+            <!-- Game Content -->
+            <div class="game-content">
+                <!-- Start Screen -->
+                <div id="startScreen" class="screen">
+                    <div class="game-icon">🧠</div>
+                    <h2>IoT Memory Challenge</h2>
+                    <p>Test your memory by matching pairs of IoT technology symbols. Challenge yourself to complete it in the fewest moves!</p>
+                    <button id="startChallengeBtn" class="btn-primary">Start Challenge</button>
+                </div>
+
+                <!-- Game Grid -->
+                <div id="gameGrid" class="game-grid" style="display: none;"></div>
+
+                <!-- Win Screen -->
+                <div id="winScreen" class="screen" style="display: none;">
+                    <div class="game-icon">🎉</div>
+                    <h2>Congratulations!</h2>
+                    <div class="results">
+                        <p>You completed the challenge in <span id="finalMoves">0</span> moves</p>
+                        <p>Time taken: <span id="finalTime">0:00</span></p>
+                    </div>
+                    <button id="playAgainBtn" class="btn-primary">Play Again</button>
+                </div>
+            </div>
+
+            <!-- Instructions -->
+            <div class="instructions">
+                <h3>📋 How to Play:</h3>
+                <ul>
+                    <li>Click cards to reveal IoT technology symbols</li>
+                    <li>Match two cards with the same symbol</li>
+                    <li>Complete all pairs to win the challenge</li>
+                    <li>Try to minimize your moves and time!</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
