@@ -294,32 +294,36 @@ class MemoryGame {
         };
 
         try {
-            // In a real application, you would send this to a server
-            // For demo purposes, we'll use localStorage
-            let scores = JSON.parse(localStorage.getItem('memoryGameScores') || '{"scores": []}');
-            scores.scores.push(scoreData);
-            
-            // Keep only top 10 scores
-            scores.scores.sort((a, b) => {
-                const scoreA = (a.moves * 1000) + a.time; // Lower is better
-                const scoreB = (b.moves * 1000) + b.time;
-                return scoreA - scoreB;
+            const response = await fetch('/api/leaderboard', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(scoreData),
             });
-            scores.scores = scores.scores.slice(0, 10);
+
+            if (!response.ok) {
+                throw new Error('Failed to save score');
+            }
             
-            localStorage.setItem('memoryGameScores', JSON.stringify(scores));
             this.loadLeaderboard();
         } catch (error) {
             console.error('Error saving score:', error);
         }
     }
 
-    loadLeaderboard() {
+    async loadLeaderboard() {
         try {
-            const scores = JSON.parse(localStorage.getItem('memoryGameScores') || '{"scores": []}');
-            this.displayLeaderboard(scores.scores);
+            const response = await fetch('/api/leaderboard');
+            if (!response.ok) {
+                throw new Error('Failed to fetch leaderboard');
+            }
+            const leaderboardData = await response.json();
+            const scores = leaderboardData.scores || [];
+            this.displayLeaderboard(scores);
         } catch (error) {
             console.error('Error loading leaderboard:', error);
+            this.displayLeaderboard([]);
         }
     }
 
@@ -359,8 +363,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 entry.target.style.transform = 'translateY(0)';
             }
         });
-    });
-    
+});
     document.querySelectorAll('.fade-in').forEach(el => {
         el.style.opacity = '0';
         el.style.transform = 'translateY(20px)';
