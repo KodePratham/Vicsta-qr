@@ -33,25 +33,47 @@
                     <button id="startChallengeBtn" class="btn-primary">Start Challenge</button>
                 </div>
 
+                <!-- Name Input Screen -->
+                <div id="nameScreen" class="screen" style="display: none;">
+                    <div class="game-icon">👤</div>
+                    <h2>Enter Your Name</h2>
+                    <p>Your score will be saved to the leaderboard!</p>
+                    <div class="name-input-container">
+                        <input type="text" id="playerNameInput" placeholder="Your name..." maxlength="20" class="name-input">
+                        <button id="nameSubmitBtn" class="btn-primary">Start Game</button>
+                    </div>
+                </div>
+
                 <!-- Game Grid -->
                 <div id="gameGrid" class="game-grid" style="display: none;"></div>
 
                 <!-- Win Screen -->
                 <div id="winScreen" class="screen" style="display: none;">
                     <div class="game-icon">🎉</div>
-                    <h2>Congratulations!</h2>
+                    <h2>Congratulations <span id="winPlayerName"></span>!</h2>
                     <div class="results">
                         <p>You completed the challenge in <span id="finalMoves">0</span> moves</p>
                         <p>Time taken: <span id="finalTime">0:00</span></p>
+                        <p class="score-saved">✅ Your score has been saved!</p>
                     </div>
                     <button id="playAgainBtn" class="btn-primary">Play Again</button>
                 </div>
+            </div>
+
+            <!-- Leaderboard -->
+            <div class="leaderboard">
+                <h3>🏆 Leaderboard</h3>
+                <ul id="leaderboardList">
+                    <li class="leaderboard-item">Loading...</li>
+                </ul>
             </div>
 
             <!-- Instructions -->
             <div class="instructions">
                 <h3>📋 How to Play:</h3>
                 <ul>
+                    <li>Enter your name to get started</li>
+                    <li>All cards will be shown for 2 seconds</li>
                     <li>Click cards to reveal IoT technology symbols</li>
                     <li>Match two cards with the same symbol</li>
                     <li>Complete all pairs to win the challenge</li>

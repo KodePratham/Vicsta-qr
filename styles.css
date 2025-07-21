@@ -325,6 +325,100 @@ body {
     font-weight: bold;
 }
 
+/* Name Input Styles */
+.name-input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.name-input {
+    width: 100%;
+    padding: 1rem;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.name-input:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+}
+
+/* Leaderboard Styles */
+.leaderboard {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-top: 2rem;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+}
+
+.leaderboard h3 {
+    color: #333;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+#leaderboardList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.leaderboard-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 10px;
+    transition: transform 0.2s ease;
+}
+
+.leaderboard-item:hover {
+    transform: translateX(5px);
+}
+
+.leaderboard-item .rank {
+    font-weight: bold;
+    color: #667eea;
+    min-width: 40px;
+}
+
+.leaderboard-item .name {
+    flex: 1;
+    font-weight: 500;
+    margin-left: 1rem;
+}
+
+.leaderboard-item .stats {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.score-saved {
+    color: #4caf50;
+    font-weight: bold;
+    margin-top: 1rem;
+}
+
+/* Preview mode styles */
+.memory-tile.preview {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-size: 2rem;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .container {
@@ -427,6 +521,20 @@ body {
   .flex.justify-center {
     flex-direction: column;
     align-items: center;
+  }
+  
+  .leaderboard-item {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+  }
+  
+  .leaderboard-item .name {
+    margin-left: 0;
+  }
+  
+  .name-input-container {
+    max-width: 250px;
   }
 }
 
@@ -554,6 +662,20 @@ button:focus {
   .flex.justify-center {
     flex-direction: column;
     align-items: center;
+  }
+  
+  .leaderboard-item {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+  }
+  
+  .leaderboard-item .name {
+    margin-left: 0;
+  }
+  
+  .name-input-container {
+    max-width: 250px;
   }
 }
 
