@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
 
 /* Reset and Base Styles */
 * {
@@ -13,150 +13,184 @@ html {
 }
 
 body {
-    font-family: 'Google Sans', 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     background: #fafafa;
     min-height: 100vh;
-    color: #202124;
+    color: #1a1a1a;
     line-height: 1.6;
+    font-weight: 300;
+    letter-spacing: 0.01em;
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
-    padding: 0 24px;
+    padding: 0 40px;
 }
 
-/* Material Design Elevation Shadows */
-.elevation-1 { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); }
-.elevation-2 { box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23); }
-.elevation-3 { box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23); }
-.elevation-4 { box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22); }
+/* Luxury Typography */
+.luxury-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+}
+
+.luxury-subtitle {
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+}
 
 /* Header Styles */
 .header {
     text-align: center;
-    padding: 48px 0;
-    margin-bottom: 32px;
+    padding: 80px 0 60px;
+    margin-bottom: 0;
+    background: linear-gradient(135deg, #000000 0%, #2c2c2c 100%);
+    color: #ffffff;
+    position: relative;
+}
+
+.header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="20" cy="20" r="0.5" fill="%23ffffff" opacity="0.03"/><circle cx="80" cy="40" r="0.3" fill="%23ffffff" opacity="0.02"/><circle cx="40" cy="80" r="0.4" fill="%23ffffff" opacity="0.03"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+    opacity: 0.4;
 }
 
 .header h1 {
-    font-size: clamp(2.5rem, 5vw, 4rem);
-    font-weight: 500;
-    margin-bottom: 16px;
-    color: #1a73e8;
-    letter-spacing: -0.02em;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 700;
+    margin-bottom: 20px;
+    letter-spacing: -0.03em;
+    position: relative;
+    z-index: 2;
 }
 
 .header p {
-    font-size: clamp(1rem, 2vw, 1.25rem);
-    color: #5f6368;
-    font-weight: 400;
+    font-size: clamp(0.9rem, 2vw, 1.1rem);
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    opacity: 0.9;
+    position: relative;
+    z-index: 2;
 }
 
 /* Welcome Section */
 .welcome-section {
     background: #ffffff;
-    border-radius: 12px;
-    padding: clamp(24px, 4vw, 48px);
-    margin-bottom: 32px;
-    border: 1px solid #e8eaed;
-}
-
-.welcome-section.elevation-1 {
-    transition: box-shadow 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
-}
-
-.welcome-section:hover {
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1), 0 4px 12px rgba(0,0,0,0.05);
+    padding: clamp(60px, 8vw, 100px) clamp(40px, 6vw, 80px);
+    margin: 0;
+    border-bottom: 1px solid #e8e8e8;
 }
 
 .welcome-section h2 {
-    font-size: clamp(1.75rem, 3vw, 2.5rem);
-    margin-bottom: 16px;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    margin-bottom: 30px;
     text-align: center;
-    color: #202124;
+    color: #1a1a1a;
     font-weight: 500;
+    letter-spacing: -0.02em;
 }
 
 .welcome-section > p {
-    font-size: clamp(1rem, 2vw, 1.125rem);
+    font-size: clamp(1.1rem, 2.5vw, 1.3rem);
     text-align: center;
-    margin-bottom: 32px;
-    color: #5f6368;
+    margin-bottom: 60px;
+    color: #666666;
     max-width: 800px;
     margin-left: auto;
     margin-right: auto;
+    font-weight: 300;
+    line-height: 1.7;
 }
 
-/* Info Cards */
+/* Luxury Info Cards */
 .info-cards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 24px;
-    margin-top: 32px;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 0;
+    margin-top: 60px;
 }
 
 .card {
     background: #ffffff;
-    padding: 32px 24px;
-    border-radius: 12px;
+    padding: 60px 40px;
     text-align: center;
-    border: 1px solid #e8eaed;
-    transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+    border-right: 1px solid #e8e8e8;
+    border-bottom: 1px solid #e8e8e8;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     position: relative;
     overflow: hidden;
+}
+
+.card:last-child {
+    border-right: none;
 }
 
 .card::before {
     content: '';
     position: absolute;
     top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #4285f4, #34a853, #fbbc05, #ea4335);
-    transform: scaleX(0);
-    transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
-}
-
-.card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    left: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #1a1a1a, transparent);
+    transition: left 0.6s ease;
 }
 
 .card:hover::before {
-    transform: scaleX(1);
+    left: 100%;
+}
+
+.card:hover {
+    background: #fafafa;
+    transform: translateY(-5px);
 }
 
 .card .icon {
-    font-size: 3rem;
-    margin-bottom: 16px;
+    font-size: 2.5rem;
+    margin-bottom: 30px;
     display: block;
+    opacity: 0.8;
 }
 
 .card h3 {
-    font-size: 1.25rem;
-    margin-bottom: 12px;
-    color: #202124;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: #1a1a1a;
     font-weight: 500;
+    letter-spacing: -0.01em;
 }
 
 .card p {
-    color: #5f6368;
+    color: #666666;
     font-size: 0.95rem;
+    font-weight: 300;
+    line-height: 1.6;
 }
 
-/* Game Section */
+/* Luxury Game Section */
 .game-section {
-    margin-top: 32px;
+    margin: 0;
+    background: #1a1a1a;
+    color: #ffffff;
+    position: relative;
 }
 
 .game-cta {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 16px;
-    padding: clamp(32px, 5vw, 48px);
+    background: transparent;
+    padding: clamp(80px, 10vw, 120px) clamp(40px, 6vw, 80px);
     text-align: center;
-    color: white;
     position: relative;
     overflow: hidden;
 }
@@ -168,9 +202,9 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(255,255,255,0.1);
+    background: linear-gradient(45deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.05) 100%);
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.6s ease;
 }
 
 .game-cta:hover::before {
@@ -178,286 +212,365 @@ body {
 }
 
 .game-icon {
-    font-size: clamp(3rem, 5vw, 4rem);
-    margin-bottom: 24px;
-    animation: float 3s ease-in-out infinite;
+    font-size: clamp(3.5rem, 6vw, 5rem);
+    margin-bottom: 40px;
+    opacity: 0.9;
 }
 
 .game-cta h3 {
-    font-size: clamp(1.5rem, 3vw, 2rem);
-    margin-bottom: 16px;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    margin-bottom: 25px;
     font-weight: 500;
+    letter-spacing: -0.02em;
 }
 
 .game-cta p {
-    font-size: clamp(1rem, 2vw, 1.125rem);
-    margin-bottom: 32px;
-    opacity: 0.9;
-    max-width: 600px;
+    font-size: clamp(1rem, 2.2vw, 1.2rem);
+    margin-bottom: 50px;
+    opacity: 0.8;
+    max-width: 700px;
     margin-left: auto;
     margin-right: auto;
+    font-weight: 300;
+    line-height: 1.7;
 }
 
-/* Material Design Buttons */
+/* Luxury Buttons */
 .btn-primary {
-    background: #1a73e8;
-    color: white;
-    border: none;
-    padding: 12px 32px;
-    border-radius: 24px;
-    font-size: 0.95rem;
+    background: #1a1a1a;
+    color: #ffffff;
+    border: 2px solid #1a1a1a;
+    padding: 18px 45px;
+    font-size: 0.9rem;
     font-weight: 500;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     text-decoration: none;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-height: 48px;
     position: relative;
     overflow: hidden;
-    text-transform: none;
-    letter-spacing: 0.025em;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    min-height: 54px;
+    box-shadow: 0 4px 15px rgba(26, 26, 26, 0.2);
 }
 
 .btn-primary::before {
     content: '';
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 0;
-    height: 0;
-    background: rgba(255,255,255,0.2);
-    border-radius: 50%;
-    transition: width 0.6s, height 0.6s;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #333333, #666666);
+    transition: left 0.4s ease;
+    z-index: 1;
+}
+
+.btn-primary span {
+    position: relative;
+    z-index: 2;
+    font-weight: 500;
 }
 
 .btn-primary:hover::before {
-    width: 300px;
-    height: 300px;
+    left: 0;
 }
 
 .btn-primary:hover {
-    background: #1557b0;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(26, 115, 232, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(26, 26, 26, 0.3);
 }
 
-.btn-secondary {
+/* Game CTA in dark section - make button visible */
+.game-cta .btn-primary {
     background: transparent;
-    color: #1a73e8;
-    border: 1px solid #dadce0;
-    padding: 8px 24px;
-    border-radius: 20px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
-    text-decoration: none;
-    display: inline-block;
-    font-size: 0.9rem;
+    color: #ffffff;
+    border: 2px solid #ffffff;
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
 }
 
-.btn-secondary:hover {
-    background: #f8f9fa;
-    border-color: #1a73e8;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+.game-cta .btn-primary::before {
+    background: #ffffff;
 }
 
-/* Game Styles */
+.game-cta .btn-primary:hover {
+    color: #1a1a1a;
+    box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+}
+
+/* Game Page Luxury Styling */
 .game-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 24px;
-    padding: 20px 24px;
+    margin-bottom: 40px;
+    padding: 30px 40px;
     background: #ffffff;
-    border-radius: 12px;
-    border: 1px solid #e8eaed;
+    border-bottom: 1px solid #e8e8e8;
     flex-wrap: wrap;
-    gap: 16px;
-}
-
-.game-title {
-    text-align: center;
-    flex: 1;
-    min-width: 200px;
+    gap: 20px;
 }
 
 .game-title h1 {
-    font-size: clamp(1.5rem, 3vw, 2.25rem);
-    margin-bottom: 8px;
-    color: #202124;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    margin-bottom: 10px;
+    color: #1a1a1a;
     font-weight: 500;
+    letter-spacing: -0.02em;
 }
 
 .game-title p {
-    color: #5f6368;
-    font-size: clamp(0.9rem, 1.5vw, 1rem);
+    color: #666666;
+    font-size: clamp(0.9rem, 1.8vw, 1rem);
+    font-weight: 300;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 .game-stats {
     display: flex;
-    gap: 24px;
-    font-weight: 500;
-    color: #1a73e8;
-    font-size: 0.95rem;
+    gap: 30px;
+    font-weight: 400;
+    color: #1a1a1a;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 .game-content {
     background: #ffffff;
-    border-radius: 12px;
-    padding: clamp(24px, 4vw, 32px);
-    margin-bottom: 24px;
-    border: 1px solid #e8eaed;
+    padding: clamp(40px, 6vw, 60px);
+    margin-bottom: 40px;
+    border: 1px solid #e8e8e8;
 }
 
 .screen {
     text-align: center;
-    padding: clamp(24px, 4vw, 48px);
+    padding: clamp(60px, 8vw, 80px);
 }
 
 .screen h2 {
-    font-size: clamp(1.5rem, 3vw, 2rem);
-    margin-bottom: 16px;
-    color: #202124;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    margin-bottom: 25px;
+    color: #1a1a1a;
     font-weight: 500;
+    letter-spacing: -0.02em;
 }
 
 .screen p {
-    font-size: clamp(1rem, 2vw, 1.125rem);
-    color: #5f6368;
-    margin-bottom: 32px;
-    max-width: 600px;
+    font-size: clamp(1rem, 2.2vw, 1.15rem);
+    color: #666666;
+    margin-bottom: 50px;
+    max-width: 700px;
     margin-left: auto;
     margin-right: auto;
+    font-weight: 300;
+    line-height: 1.7;
 }
 
-/* Password Game Specific Styles */
+/* Luxury Password Game Styling */
 .password-game-content {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    max-width: 900px;
+    gap: 40px;
+    max-width: 1200px;
     margin: 0 auto;
+    padding: 0 20px;
 }
 
 .hints-section, .guess-section, .feedback-section {
     background: #ffffff;
-    border-radius: 12px;
-    padding: clamp(16px, 3vw, 28px);
-    border: 1px solid #e8eaed;
-    transition: box-shadow 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+    padding: clamp(40px, 6vw, 60px);
+    border: none;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    position: relative;
+    overflow: hidden;
 }
 
-.hints-section:hover, .guess-section:hover, .feedback-section:hover {
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+.hints-section::before, .guess-section::before, .feedback-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(135deg, #1a1a1a, #4a4a4a);
 }
 
 .hints-section h3, .guess-section h3, .feedback-section h3 {
-    color: #202124;
-    margin-bottom: 16px;
-    font-size: clamp(1rem, 2vw, 1.25rem);
-    font-weight: 500;
+    font-family: 'Playfair Display', serif;
+    color: #1a1a1a;
+    margin-bottom: 40px;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    text-align: center;
+    position: relative;
+}
+
+.hints-section h3::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 2px;
+    background: #1a1a1a;
 }
 
 .hints-container {
     display: grid;
-    gap: 12px;
-    margin-top: 12px;
+    gap: 25px;
+    margin-top: 30px;
 }
 
 .hint-item {
-    background: #f8f9fa;
-    border-radius: 8px;
-    padding: clamp(12px, 2.5vw, 16px);
-    border-left: 4px solid #1a73e8;
-    transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+    background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
+    padding: clamp(30px, 5vw, 45px);
+    border: 1px solid #e8e8e8;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     position: relative;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.04);
+}
+
+.hint-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 5px;
+    height: 100%;
+    background: linear-gradient(135deg, #1a1a1a, #4a4a4a);
+    transform: scaleY(0);
+    transition: transform 0.4s ease;
+    transform-origin: bottom;
+}
+
+.hint-item::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(26, 26, 26, 0.02), rgba(26, 26, 26, 0.05));
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.hint-item:hover::before {
+    transform: scaleY(1);
+    transform-origin: top;
+}
+
+.hint-item:hover::after {
+    opacity: 1;
 }
 
 .hint-item:hover {
-    transform: translateX(4px);
-    background: #f1f3f4;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
 }
 
 .hint-number {
-    font-weight: 500;
-    color: #1a73e8;
-    margin-bottom: 6px;
-    font-size: clamp(0.85rem, 1.5vw, 0.95rem);
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 15px;
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    position: relative;
+    z-index: 2;
 }
 
 .hint-text {
-    font-size: clamp(0.95rem, 2vw, 1.1rem);
-    color: #202124;
-    line-height: 1.4;
+    font-size: clamp(1.2rem, 2.5vw, 1.4rem);
+    color: #333333;
+    line-height: 1.6;
     font-weight: 400;
+    position: relative;
+    z-index: 2;
+    font-family: 'Inter', sans-serif;
 }
 
 .password-input-container {
     display: flex;
-    gap: 12px;
-    margin-top: 16px;
+    gap: 25px;
+    margin-top: 35px;
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
 }
 
 .password-input {
-    min-width: clamp(180px, 40vw, 250px);
-    max-width: 300px;
-    padding: clamp(12px, 2vw, 16px);
-    font-size: clamp(1.25rem, 3vw, 1.75rem);
+    min-width: clamp(250px, 60vw, 350px);
+    max-width: 400px;
+    padding: clamp(25px, 4vw, 30px);
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
     text-align: center;
-    border: 2px solid #dadce0;
-    border-radius: 8px;
+    border: 3px solid #e8e8e8;
     background: #ffffff;
-    color: #202124;
-    letter-spacing: 0.3em;
-    font-weight: 500;
-    transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+    color: #1a1a1a;
+    letter-spacing: 0.5em;
+    font-weight: 600;
+    font-family: 'Inter', monospace;
+    transition: all 0.4s ease;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
 }
 
 .password-input:focus {
-    border-color: #1a73e8;
+    border-color: #1a1a1a;
     outline: none;
-    box-shadow: 0 0 0 4px rgba(26, 115, 232, 0.1);
+    box-shadow: 0 0 0 4px rgba(26, 26, 26, 0.1), 0 10px 30px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
 }
 
+.password-input::placeholder {
+    color: #bbb;
+    opacity: 0.7;
+}
+
+/* Enhanced feedback section */
 .feedback-container {
-    max-height: 350px;
+    max-height: 400px;
     overflow-y: auto;
-    margin-top: 12px;
-    padding-right: 4px;
+    margin-top: 20px;
+    padding-right: 10px;
 }
 
 .feedback-item {
-    background: #f8f9fa;
-    border-radius: 8px;
-    padding: clamp(12px, 2vw, 14px);
-    margin-bottom: 10px;
-    border-left: 3px solid #4285f4;
-    transition: background-color 0.3s ease;
+    background: linear-gradient(135deg, #f8f9fa 0%, #f1f3f4 100%);
+    padding: 20px 25px;
+    margin-bottom: 15px;
+    border-left: 4px solid #1a1a1a;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease;
 }
 
 .feedback-item:hover {
-    background: #f1f3f4;
+    transform: translateX(5px);
 }
 
 .guess-attempt {
-    font-weight: 500;
-    margin-bottom: 6px;
-    color: #202124;
-    font-size: clamp(0.9rem, 1.5vw, 0.95rem);
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #1a1a1a;
+    font-size: 1.1rem;
 }
 
 .feedback-details {
     display: flex;
-    gap: clamp(12px, 3vw, 16px);
-    font-size: clamp(0.8rem, 1.2vw, 0.85rem);
+    gap: 20px;
+    font-size: 0.95rem;
     flex-wrap: wrap;
 }
 
@@ -471,112 +584,374 @@ body {
     font-weight: 500;
 }
 
-/* Answers container styling */
+/* Results and answers styling */
+.results {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e8f5e8 100%);
+    padding: 40px;
+    border: 2px solid #137333;
+    margin: 30px 0;
+    text-align: left;
+    box-shadow: 0 10px 30px rgba(19, 115, 51, 0.1);
+}
+
+.results p {
+    margin: 15px 0;
+    font-size: clamp(1.1rem, 2.2vw, 1.3rem);
+    line-height: 1.6;
+}
+
+.results strong {
+    color: #137333;
+    font-size: 1.4em;
+    font-weight: 700;
+}
+
 .answers-container {
-    background: #ffffff;
-    border-radius: 12px;
-    padding: clamp(16px, 3vw, 20px);
-    margin: 16px 0;
-    border: 1px solid #e8eaed;
-    border-left: 4px solid #137333;
+    margin-top: 30px;
+    background: #fafafa;
+    padding: 30px;
+    border: 1px solid #e8e8e8;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
 }
 
-.answer-item {
-    background: #f8f9fa;
-    border-radius: 8px;
-    padding: 12px 16px;
-    margin-bottom: 8px;
-    border-left: 3px solid #137333;
-    transition: background-color 0.3s ease;
-}
-
-.answer-item:hover {
-    background: #f1f3f4;
-}
-
-/* Enhanced responsive design */
-@media (max-width: 768px) {
+/* Enhanced Responsive Design */
+@media (max-width: 1200px) {
     .container {
-        padding: 0 12px;
+        padding: 0 30px;
+    }
+    
+    .info-cards {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     }
     
     .password-game-content {
-        gap: 16px;
+        max-width: 900px;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 20px;
+    }
+    
+    .header {
+        padding: 60px 0 40px;
+    }
+    
+    .header h1 {
+        font-size: clamp(2.5rem, 10vw, 4rem);
+        margin-bottom: 15px;
+    }
+    
+    .welcome-section {
+        padding: clamp(40px, 8vw, 60px) clamp(20px, 5vw, 40px);
+    }
+    
+    .welcome-section h2 {
+        font-size: clamp(2rem, 8vw, 3rem);
+        margin-bottom: 20px;
+    }
+    
+    .welcome-section > p {
+        font-size: clamp(1rem, 4vw, 1.2rem);
+        margin-bottom: 40px;
+    }
+    
+    .info-cards {
+        grid-template-columns: 1fr;
+        gap: 0;
+        margin-top: 30px;
+    }
+    
+    .card {
+        padding: 40px 30px;
+        border-right: none;
+        border-bottom: 1px solid #e8e8e8;
+    }
+    
+    .card:last-child {
+        border-bottom: none;
+    }
+    
+    .game-cta {
+        padding: clamp(50px, 8vw, 80px) clamp(20px, 5vw, 40px);
     }
     
     .game-header {
         flex-direction: column;
         text-align: center;
-        gap: 12px;
-        padding: 16px 20px;
+        gap: 15px;
+        padding: 20px;
     }
     
     .game-stats {
         justify-content: center;
         gap: 20px;
-        font-size: 0.9rem;
+        flex-wrap: wrap;
+    }
+    
+    .password-game-content {
+        gap: 25px;
+        padding: 0 10px;
+    }
+    
+    .hints-section, .guess-section, .feedback-section {
+        padding: clamp(25px, 6vw, 40px);
+    }
+    
+    .hint-item {
+        padding: clamp(20px, 5vw, 30px);
     }
     
     .password-input-container {
         flex-direction: column;
-        gap: 12px;
+        gap: 15px;
         align-items: stretch;
     }
     
     .password-input {
-        max-width: 100%;
         min-width: 100%;
+        max-width: 100%;
+        letter-spacing: 0.3em;
+        font-size: clamp(1.5rem, 8vw, 2rem);
+        padding: clamp(20px, 5vw, 25px);
     }
     
     .feedback-details {
         flex-direction: column;
-        gap: 6px;
-    }
-    
-    .hints-container {
-        gap: 10px;
+        gap: 8px;
     }
     
     .btn-primary {
+        padding: 15px 30px;
+        font-size: 0.85rem;
+        min-height: 48px;
         width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+    
+    .game-cta .btn-primary {
+        width: auto;
         max-width: none;
-        padding: 14px 24px;
+    }
+    
+    .results {
+        padding: 30px 20px;
+        margin: 20px 0;
+    }
+    
+    .answers-container {
+        padding: 20px;
+        margin-top: 20px;
     }
 }
 
 @media (max-width: 480px) {
-    .hints-section, .guess-section, .feedback-section {
-        padding: 16px;
+    .container {
+        padding: 0 15px;
     }
     
-    .hint-item {
-        padding: 12px;
+    .header {
+        padding: 40px 0 30px;
+    }
+    
+    .header h1 {
+        font-size: clamp(2rem, 12vw, 3rem);
+    }
+    
+    .header p {
+        font-size: clamp(0.8rem, 4vw, 1rem);
+    }
+    
+    .welcome-section {
+        padding: clamp(30px, 8vw, 40px) clamp(15px, 4vw, 25px);
+    }
+    
+    .welcome-section h2 {
+        font-size: clamp(1.8rem, 10vw, 2.5rem);
+    }
+    
+    .card {
+        padding: 30px 20px;
+    }
+    
+    .card .icon {
+        font-size: 2rem;
+        margin-bottom: 20px;
+    }
+    
+    .card h3 {
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+    }
+    
+    .game-cta {
+        padding: clamp(40px, 10vw, 60px) clamp(15px, 4vw, 25px);
+    }
+    
+    .game-icon {
+        font-size: clamp(2.5rem, 12vw, 4rem);
+        margin-bottom: 25px;
+    }
+    
+    .game-cta h3 {
+        font-size: clamp(1.5rem, 8vw, 2.2rem);
+        margin-bottom: 20px;
+    }
+    
+    .game-cta p {
+        font-size: clamp(0.9rem, 4vw, 1.1rem);
+        margin-bottom: 30px;
+    }
+    
+    .game-header {
+        padding: 15px;
+    }
+    
+    .game-title h1 {
+        font-size: clamp(1.5rem, 8vw, 2.2rem);
+    }
+    
+    .game-title p {
+        font-size: clamp(0.8rem, 3vw, 0.9rem);
+    }
+    
+    .game-stats {
+        gap: 15px;
+        font-size: 0.8rem;
+    }
+    
+    .hints-section h3, .guess-section h3, .feedback-section h3 {
+        font-size: clamp(1.2rem, 6vw, 1.6rem);
+        margin-bottom: 25px;
+    }
+    
+    .hint-text {
+        font-size: clamp(1rem, 5vw, 1.2rem);
+    }
+    
+    .hint-number {
+        font-size: clamp(0.9rem, 4vw, 1rem);
     }
     
     .password-input {
-        font-size: 1.4rem;
+        font-size: clamp(1.3rem, 10vw, 1.8rem);
+        padding: 15px 20px;
         letter-spacing: 0.2em;
-        padding: 14px;
     }
     
-    .feedback-container {
-        max-height: 250px;
+    .btn-primary {
+        padding: 12px 25px;
+        font-size: 0.8rem;
+        min-height: 44px;
     }
     
-    .game-content {
-        padding: 20px 16px;
+    .feedback-item {
+        padding: 15px 18px;
+        margin-bottom: 10px;
+    }
+    
+    .guess-attempt {
+        font-size: 1rem;
+        margin-bottom: 8px;
+    }
+    
+    .feedback-details {
+        font-size: 0.85rem;
+    }
+    
+    .results {
+        padding: 25px 15px;
+    }
+    
+    .results p {
+        font-size: clamp(1rem, 5vw, 1.2rem);
+        margin: 12px 0;
+    }
+    
+    .answers-container {
+        padding: 15px;
     }
 }
 
-/* Improved touch targets for mobile */
-@media (max-width: 768px) {
-    .btn-primary, .btn-secondary {
+/* Ultra small screens */
+@media (max-width: 320px) {
+    .password-input {
+        font-size: 1.2rem;
+        padding: 12px 15px;
+    }
+    
+    .btn-primary {
+        padding: 10px 20px;
+        min-height: 40px;
+        font-size: 0.75rem;
+    }
+    
+    .card {
+        padding: 25px 15px;
+    }
+    
+    .game-cta {
+        padding: 30px 15px;
+    }
+}
+
+/* Large screens optimization */
+@media (min-width: 1400px) {
+    .container {
+        max-width: 1600px;
+        padding: 0 60px;
+    }
+    
+    .password-game-content {
+        max-width: 1400px;
+    }
+    
+    .info-cards {
+        grid-template-columns: repeat(3, 1fr);
+        max-width: 1200px;
+        margin: 60px auto 0;
+    }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+    .btn-primary {
         min-height: 48px;
-        padding: 12px 24px;
+        padding: 15px 30px;
     }
     
     .password-input {
-        min-height: 52px;
+        min-height: 48px;
+        font-size: 18px; /* Prevents zoom on iOS */
+    }
+    
+    .card:hover {
+        transform: none;
+    }
+    
+    .hint-item:hover {
+        transform: none;
+    }
+}
+
+/* Landscape phone optimization */
+@media (max-height: 500px) and (orientation: landscape) {
+    .header {
+        padding: 30px 0 20px;
+    }
+    
+    .welcome-section {
+        padding: 30px 20px;
+    }
+    
+    .game-cta {
+        padding: 40px 20px;
+    }
+    
+    .screen {
+        padding: 30px;
     }
 }
 

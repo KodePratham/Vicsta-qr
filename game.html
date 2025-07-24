@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Test your general knowledge with our interactive password challenge game">
-    <title>Password Challenge - Vicsta IoT Club</title>
+    <title>Password Challenge - Vicsta Tech Club</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,7 +19,7 @@
                 </a>
                 <div class="game-title">
                     <h1>Password Challenge</h1>
-                    <p>Crack the 4-digit code using general knowledge!</p>
+                    <p>Test your problem-solving skills</p>
                 </div>
                 <div class="game-stats" role="status" aria-live="polite">
                     <div>Attempts: <span id="attemptsCount">0</span></div>
@@ -33,21 +33,21 @@
                 <section id="startScreen" class="screen fade-in">
                     <div class="game-icon" aria-hidden="true">🔐</div>
                     <h2>Password Challenge</h2>
-                    <p>Use general knowledge to crack a 4-digit password! You'll get 4 questions about common facts. The answers will show you which digit to use for each position.</p>
+                    <p>Use general knowledge to crack a 4-digit password. You'll get 4 questions about common facts. Think carefully about each answer.</p>
                     <button id="startChallengeBtn" class="btn-primary" type="button">
-                        Start Challenge
+                        <span>Start Challenge</span>
                     </button>
                 </section>
 
                 <!-- Game Content -->
                 <section id="gameContent" class="password-game-content" style="display: none;" aria-label="Game play area">
-                    <div class="hints-section elevation-1">
-                        <h3>🧩 Your Hints</h3>
+                    <div class="hints-section">
+                        <h3>🧩 Your Questions</h3>
                         <div id="hintsContainer" class="hints-container" role="list"></div>
                     </div>
                     
-                    <div class="guess-section elevation-1">
-                        <h3>🔢 Enter 4-Digit Password</h3>
+                    <div class="guess-section">
+                        <h3>🔢 Enter Your Answer</h3>
                         <div class="password-input-container">
                             <label for="passwordInput" class="sr-only">Enter your 4-digit password guess</label>
                             <input 
@@ -62,12 +62,12 @@
                             >
                             <div id="password-help" class="sr-only">Enter a 4-digit number based on the hints provided</div>
                             <button id="submitGuessBtn" class="btn-primary" type="button">
-                                Submit Guess
+                                <span>Submit Guess</span>
                             </button>
                         </div>
                     </div>
                     
-                    <div class="feedback-section elevation-1">
+                    <div class="feedback-section">
                         <h3>📊 Your Attempts</h3>
                         <div id="feedbackContainer" class="feedback-container" role="log" aria-live="polite"></div>
                     </div>
@@ -84,7 +84,7 @@
                     </div>
                     <div id="answersContainer" class="answers-container elevation-1"></div>
                     <button id="playAgainBtn" class="btn-primary" type="button">
-                        Play Again
+                        <span>Play Again</span>
                     </button>
                 </section>
             </main>
@@ -95,13 +95,13 @@
                 <ul>
                     <li>Click "Start Challenge" to begin immediately</li>
                     <li>Study the 4 general knowledge questions carefully</li>
-                    <li>Each question has a numerical answer (1-6)</li>
-                    <li>Think carefully about each answer - no hints are given!</li>
+                    <li>Each question has a numerical answer (typically 1-6)</li>
+                    <li>Think carefully about each answer - use your knowledge!</li>
                     <li>The questions are in order - position 1, 2, 3, 4</li>
                     <li>Enter your best guess for the 4-digit code</li>
                     <li>Get feedback on correct positions and digits after each guess</li>
-                    <li>Keep guessing until you crack the code!</li>
-                    <li>🎉 Correct answers will be revealed when you win!</li>
+                    <li>Keep refining your guesses until you crack the code!</li>
+                    <li>🎉 All correct answers will be revealed when you win!</li>
                 </ul>
             </aside>
         </div>
