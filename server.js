@@ -24,7 +24,7 @@ app.get('/api/leaderboard', async (req, res) => {
 app.post('/api/leaderboard', async (req, res) => {
     try {
         const newScore = req.body;
-        if (!newScore || !newScore.name || typeof newScore.moves !== 'number' || typeof newScore.time !== 'number') {
+        if (!newScore || !newScore.name || typeof newScore.attempts !== 'number' || typeof newScore.time !== 'number') {
             return res.status(400).json({ message: 'Invalid score data' });
         }
 
@@ -33,10 +33,10 @@ app.post('/api/leaderboard', async (req, res) => {
         
         leaderboard.scores.push(newScore);
 
-        // Sort scores - lower is better (moves are primary, time is secondary)
+        // Sort scores - lower is better (attempts are primary, time is secondary)
         leaderboard.scores.sort((a, b) => {
-            const scoreA = (a.moves * 1000) + a.time;
-            const scoreB = (b.moves * 1000) + b.time;
+            const scoreA = (a.attempts * 10000) + a.time;
+            const scoreB = (b.attempts * 10000) + b.time;
             return scoreA - scoreB;
         });
 

@@ -3,79 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IoT Memory Challenge - Vicsta</title>
+    <meta name="description" content="Test your general knowledge with our interactive password challenge game">
+    <title>Password Challenge - Vicsta IoT Club</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 </head>
 <body>
-    <!-- Game Page -->
     <div id="gamePage" class="page">
         <div class="container">
             <!-- Game Header -->
-            <div class="game-header">
-                <a href="index.html" class="btn-secondary">← Back to Club</a>
+            <header class="game-header elevation-1" role="banner">
+                <a href="index.html" class="btn-secondary" aria-label="Back to club homepage">
+                    ← Back to Club
+                </a>
                 <div class="game-title">
-                    <h1>IoT Memory Challenge</h1>
-                    <p>Match the technology pairs!</p>
+                    <h1>Password Challenge</h1>
+                    <p>Crack the 4-digit code using general knowledge!</p>
                 </div>
-                <div class="game-stats">
-                    <div>Moves: <span id="movesCount">0</span></div>
+                <div class="game-stats" role="status" aria-live="polite">
+                    <div>Attempts: <span id="attemptsCount">0</span></div>
                     <div>Time: <span id="timeCount">0:00</span></div>
                 </div>
-            </div>
+            </header>
 
             <!-- Game Content -->
-            <div class="game-content">
+            <main class="game-content elevation-1" role="main">
                 <!-- Start Screen -->
-                <div id="startScreen" class="screen">
-                    <div class="game-icon">🧠</div>
-                    <h2>IoT Memory Challenge</h2>
-                    <p>Test your memory by matching pairs of IoT technology symbols. Challenge yourself to complete it in the fewest moves!</p>
-                    <button id="startChallengeBtn" class="btn-primary">Start Challenge</button>
-                </div>
+                <section id="startScreen" class="screen fade-in">
+                    <div class="game-icon" aria-hidden="true">🔐</div>
+                    <h2>Password Challenge</h2>
+                    <p>Use general knowledge to crack a 4-digit password! You'll get 4 questions about common facts. The answers will show you which digit to use for each position.</p>
+                    <button id="startChallengeBtn" class="btn-primary" type="button">
+                        Start Challenge
+                    </button>
+                </section>
 
-                <!-- Name Input Screen -->
-                <div id="nameScreen" class="screen" style="display: none;">
-                    <div class="game-icon">👤</div>
-                    <h2>Enter Your Name</h2>
-                    <p>Your score will be saved to the leaderboard!</p>
-                    <div class="name-input-container">
-                        <input type="text" id="playerNameInput" placeholder="Your name..." maxlength="20" class="name-input">
-                        <button id="nameSubmitBtn" class="btn-primary">Start Game</button>
+                <!-- Game Content -->
+                <section id="gameContent" class="password-game-content" style="display: none;" aria-label="Game play area">
+                    <div class="hints-section elevation-1">
+                        <h3>🧩 Your Hints</h3>
+                        <div id="hintsContainer" class="hints-container" role="list"></div>
                     </div>
-                </div>
-
-                <!-- Game Grid -->
-                <div id="gameGrid" class="game-grid" style="display: none;"></div>
+                    
+                    <div class="guess-section elevation-1">
+                        <h3>🔢 Enter 4-Digit Password</h3>
+                        <div class="password-input-container">
+                            <label for="passwordInput" class="sr-only">Enter your 4-digit password guess</label>
+                            <input 
+                                type="text" 
+                                id="passwordInput" 
+                                placeholder="####" 
+                                maxlength="4" 
+                                class="password-input"
+                                aria-describedby="password-help"
+                                autocomplete="off"
+                                inputmode="numeric"
+                            >
+                            <div id="password-help" class="sr-only">Enter a 4-digit number based on the hints provided</div>
+                            <button id="submitGuessBtn" class="btn-primary" type="button">
+                                Submit Guess
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="feedback-section elevation-1">
+                        <h3>📊 Your Attempts</h3>
+                        <div id="feedbackContainer" class="feedback-container" role="log" aria-live="polite"></div>
+                    </div>
+                </section>
 
                 <!-- Win Screen -->
-                <div id="winScreen" class="screen" style="display: none;">
-                    <div class="game-icon">🎉</div>
-                    <h2>Congratulations <span id="winPlayerName"></span>!</h2>
-                    <div class="results">
-                        <p>You completed the challenge in <span id="finalMoves">0</span> moves</p>
+                <section id="winScreen" class="screen fade-in" style="display: none;" aria-label="Victory screen">
+                    <div class="game-icon" aria-hidden="true">🎉</div>
+                    <h2>Congratulations <span id="winPlayerName">Player</span>!</h2>
+                    <div class="results elevation-1">
+                        <p>You cracked the password: <strong id="finalPassword">0000</strong></p>
+                        <p>Attempts taken: <span id="finalAttempts">0</span></p>
                         <p>Time taken: <span id="finalTime">0:00</span></p>
-                        <p class="score-saved">✅ Your score has been saved!</p>
                     </div>
-                    <button id="playAgainBtn" class="btn-primary">Play Again</button>
-                </div>
-            </div>
-
- 
+                    <div id="answersContainer" class="answers-container elevation-1"></div>
+                    <button id="playAgainBtn" class="btn-primary" type="button">
+                        Play Again
+                    </button>
+                </section>
+            </main>
 
             <!-- Instructions -->
-            <div class="instructions">
-                <h3>📋 How to Play:</h3>
+            <aside class="instructions elevation-1" role="complementary">
+                <h3>🔍 How to Play</h3>
                 <ul>
-                    <li>Enter your name to get started</li>
-                    <li>All cards will be shown for 2 seconds</li>
-                    <li>Click cards to reveal IoT technology symbols</li>
-                    <li>Match two cards with the same symbol</li>
-                    <li>Complete all pairs to win the challenge</li>
-                    <li>Try to minimize your moves and time!</li>
+                    <li>Click "Start Challenge" to begin immediately</li>
+                    <li>Study the 4 general knowledge questions carefully</li>
+                    <li>Each question has a numerical answer (1-6)</li>
+                    <li>Think carefully about each answer - no hints are given!</li>
+                    <li>The questions are in order - position 1, 2, 3, 4</li>
+                    <li>Enter your best guess for the 4-digit code</li>
+                    <li>Get feedback on correct positions and digits after each guess</li>
+                    <li>Keep guessing until you crack the code!</li>
+                    <li>🎉 Correct answers will be revealed when you win!</li>
                 </ul>
-            </div>
+            </aside>
         </div>
     </div>
+
+    <!-- Screen reader only styles -->
+    <style>
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+    </style>
 
     <script src="script.js"></script>
 </body>

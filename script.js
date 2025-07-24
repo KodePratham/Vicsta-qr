@@ -1,88 +1,98 @@
-class MemoryGame {
+class PasswordGame {
     constructor() {
-        this.cards = [];
-        this.flippedCards = [];
-        this.matchedCards = [];
-        this.moves = 0;
+        this.password = '';
+        this.currentGuess = '';
+        this.attempts = 0;
         this.gameStarted = false;
         this.timeElapsed = 0;
         this.timer = null;
-        this.playerName = '';
-        this.previewMode = false;
+        this.playerName = 'Anonymous Player';
+        this.hints = [];
+        this.selectedHints = [];
         
-        this.cardSymbols = ['🔧', '⚡', '🌐', '📡', '🤖', '💡', '🔋', '📱'];
+        // 20 specific questions with answers
+        this.allHints = [
+            { digit: 1, hint: "How many noses does a person have?", answer: "1" },
+            { digit: 2, hint: "How many eyes does a normal cat have?", answer: "2" },
+            { digit: 3, hint: "How many wheels does a tricycle have?", answer: "3" },
+            { digit: 4, hint: "How many legs does a chair usually have?", answer: "4" },
+            { digit: 5, hint: "How many fingers are on one hand?", answer: "5" },
+            { digit: 6, hint: "How many sides does a regular hexagon have?", answer: "6" },
+            { digit: 2, hint: "How many days are there in a week that start with the letter 'S'?", answer: "2" },
+            { digit: 6, hint: "How many legs does an insect have?", answer: "6" },
+            { digit: 3, hint: "How many colors are there in traffic lights?", answer: "3" },
+            { digit: 2, hint: "How many thumbs does a person have?", answer: "2" },
+            { digit: 1, hint: "How many moons does Earth have?", answer: "1" },
+            { digit: 1, hint: "How many horns does a unicorn have?", answer: "1" },
+            { digit: 2, hint: "How many wings does a bird have?", answer: "2" },
+            { digit: 2, hint: "How many hands does a clock usually have?", answer: "2" },
+            { digit: 1, hint: "How many tails does a dog have?", answer: "1" },
+            { digit: 1, hint: "How many zeroes are there in the number 10?", answer: "1" },
+            { digit: 1, hint: "How many seasons are there in a year starting with the letter 'W'?", answer: "1" },
+            { digit: 2, hint: "How many ears does a normal human have?", answer: "2" },
+            { digit: 3, hint: "How many letters are in the word \"cat\"?", answer: "3" },
+            { digit: 2, hint: "How many legs does a bird usually have?", answer: "2" }
+        ];
         
         this.initializeEventListeners();
-        this.loadLeaderboard();
         this.resetGame();
     }
     
     initializeEventListeners() {
         const startBtn = document.getElementById('startChallengeBtn');
         const playAgainBtn = document.getElementById('playAgainBtn');
-        const nameSubmitBtn = document.getElementById('nameSubmitBtn');
+        const submitGuessBtn = document.getElementById('submitGuessBtn');
         
         if (startBtn) {
             startBtn.addEventListener('click', () => {
-                this.showNameInput();
+                this.startGame();
             });
         }
         
         if (playAgainBtn) {
             playAgainBtn.addEventListener('click', () => {
-                this.showNameInput();
+                this.startGame();
             });
         }
 
-        if (nameSubmitBtn) {
-            nameSubmitBtn.addEventListener('click', () => {
-                this.submitName();
+        if (submitGuessBtn) {
+            submitGuessBtn.addEventListener('click', () => {
+                this.submitGuess();
             });
         }
 
-        const nameInput = document.getElementById('playerNameInput');
-        if (nameInput) {
-            nameInput.addEventListener('keypress', (e) => {
+        const passwordInput = document.getElementById('passwordInput');
+        if (passwordInput) {
+            passwordInput.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') {
-                    this.submitName();
+                    this.submitGuess();
                 }
             });
+            
+            passwordInput.addEventListener('input', (e) => {
+                // Only allow digits and limit to 4 characters
+                e.target.value = e.target.value.replace(/\D/g, '').slice(0, 4);
+            });
         }
     }
 
-    showNameInput() {
-        const nameScreen = document.getElementById('nameScreen');
-        const startScreen = document.getElementById('startScreen');
-        const gameGrid = document.getElementById('gameGrid');
-        const winScreen = document.getElementById('winScreen');
-        
-        if (nameScreen) nameScreen.style.display = 'block';
-        if (startScreen) startScreen.style.display = 'none';
-        if (gameGrid) gameGrid.style.display = 'none';
-        if (winScreen) winScreen.style.display = 'none';
-    }
-
-    submitName() {
-        const nameInput = document.getElementById('playerNameInput');
-        const name = nameInput.value.trim();
-        
-        if (name.length < 2) {
-            alert('Please enter a name with at least 2 characters');
-            return;
-        }
-        
-        this.playerName = name;
-        this.startGame();
-    }
-    
     resetGame() {
-        this.cards = [];
-        this.flippedCards = [];
-        this.matchedCards = [];
-        this.moves = 0;
+        this.password = '';
+        this.currentGuess = '';
+        this.attempts = 0;
         this.timeElapsed = 0;
         this.gameStarted = false;
+        this.hints = [];
+        this.selectedHints = [];
         this.stopTimer();
+        
+        // Clear feedback container
+        const feedbackContainer = document.getElementById('feedbackContainer');
+        if (feedbackContainer) feedbackContainer.innerHTML = '';
+        
+        // Clear password input
+        const passwordInput = document.getElementById('passwordInput');
+        if (passwordInput) passwordInput.value = '';
         
         this.updateDisplay();
         this.showStartScreen();
@@ -90,127 +100,168 @@ class MemoryGame {
     
     startGame() {
         this.resetGame();
-        this.initializeCards();
-        this.renderGameGrid();
-        this.showGameGrid();
-        this.previewCards();
+        this.generatePassword();
+        this.showGameContent();
+        this.gameStarted = true;
+        this.startTimer();
     }
 
-    previewCards() {
-        this.previewMode = true;
-        const gameGrid = document.getElementById('gameGrid');
+    generatePassword() {
+        // Shuffle all hints and pick 4 random ones
+        const shuffledHints = [...this.allHints].sort(() => Math.random() - 0.5);
+        this.selectedHints = shuffledHints.slice(0, 4);
         
-        // Show all cards for 2 seconds
-        this.cards.forEach(card => {
-            const cardElement = document.querySelector(`[data-card-id="${card.id}"]`);
-            cardElement.className = 'memory-tile flipped';
-            cardElement.innerHTML = card.symbol;
-        });
+        // Create password from selected hints - use the digit property directly
+        this.password = this.selectedHints.map(hint => hint.digit.toString()).join('');
+        
+        console.log('Generated Password:', this.password);
+        console.log('Selected Hints:', this.selectedHints.map((hint, index) => 
+            `Position ${index + 1}: ${hint.hint} = ${hint.digit}`
+        ));
+        
+        this.displayHints();
+    }
 
-        setTimeout(() => {
-            // Hide all cards and start the game
-            this.cards.forEach(card => {
-                const cardElement = document.querySelector(`[data-card-id="${card.id}"]`);
-                cardElement.className = 'memory-tile';
-                cardElement.innerHTML = '?';
-            });
-            this.previewMode = false;
-            this.gameStarted = true;
-            this.startTimer();
-        }, 2000);
-    }
-    
-    initializeCards() {
-        this.cards = [];
+    displayHints() {
+        const hintsContainer = document.getElementById('hintsContainer');
+        if (!hintsContainer) return;
+
+        hintsContainer.innerHTML = '';
         
-        this.cardSymbols.forEach((symbol, index) => {
-            this.cards.push(
-                { id: index * 2, symbol, matched: false },
-                { id: index * 2 + 1, symbol, matched: false }
-            );
-        });
-        
-        // Shuffle cards
-        for (let i = this.cards.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [this.cards[i], this.cards[j]] = [this.cards[j], this.cards[i]];
-        }
-    }
-    
-    renderGameGrid() {
-        const gameGrid = document.getElementById('gameGrid');
-        gameGrid.innerHTML = '';
-        
-        this.cards.forEach(card => {
-            const cardElement = document.createElement('div');
-            cardElement.className = 'memory-tile';
-            cardElement.dataset.cardId = card.id;
-            cardElement.innerHTML = '?';
-            
-            cardElement.addEventListener('click', () => {
-                this.flipCard(card.id);
-            });
-            
-            gameGrid.appendChild(cardElement);
+        this.selectedHints.forEach((hint, index) => {
+            const hintElement = document.createElement('div');
+            hintElement.className = 'hint-item';
+            hintElement.innerHTML = `
+                <div class="hint-number">Position ${index + 1}:</div>
+                <div class="hint-text">${hint.hint}</div>
+            `;
+            hintsContainer.appendChild(hintElement);
         });
     }
-    
-    flipCard(cardId) {
-        if (!this.gameStarted || 
-            this.previewMode ||
-            this.flippedCards.length === 2 || 
-            this.flippedCards.includes(cardId) || 
-            this.matchedCards.includes(cardId)) {
+
+    submitGuess() {
+        const passwordInput = document.getElementById('passwordInput');
+        const guess = passwordInput.value.trim();
+        
+        if (guess.length !== 4) {
+            alert('Please enter a 4-digit password');
             return;
         }
         
-        const card = this.cards.find(c => c.id === cardId);
-        const cardElement = document.querySelector(`[data-card-id="${cardId}"]`);
+        this.attempts++;
+        this.updateDisplay();
         
-        this.flippedCards.push(cardId);
-        cardElement.className = 'memory-tile flipped';
-        cardElement.innerHTML = card.symbol;
+        console.log('Your guess:', guess);
+        console.log('Correct password:', this.password);
+        console.log('Match?', guess === this.password);
         
-        if (this.flippedCards.length === 2) {
-            this.moves++;
-            this.updateDisplay();
-            
-            const [firstCardId, secondCardId] = this.flippedCards;
-            const firstCard = this.cards.find(c => c.id === firstCardId);
-            const secondCard = this.cards.find(c => c.id === secondCardId);
-            
-            if (firstCard.symbol === secondCard.symbol) {
-                // Match found
-                setTimeout(() => {
-                    this.matchedCards.push(...this.flippedCards);
-                    this.flippedCards = [];
-                    
-                    const firstElement = document.querySelector(`[data-card-id="${firstCardId}"]`);
-                    const secondElement = document.querySelector(`[data-card-id="${secondCardId}"]`);
-                    firstElement.className = 'memory-tile matched';
-                    secondElement.className = 'memory-tile matched';
-                    
-                    if (this.matchedCards.length === 16) {
-                        this.gameStarted = false;
-                        this.stopTimer();
-                        this.saveScore();
-                        setTimeout(() => {
-                            this.showWinScreen();
-                        }, 500);
-                    }
-                }, 300);
-            } else {
-                // No match
-                setTimeout(() => {
-                    this.flippedCards.forEach(id => {
-                        const element = document.querySelector(`[data-card-id="${id}"]`);
-                        element.className = 'memory-tile';
-                        element.innerHTML = '?';
-                    });
-                    this.flippedCards = [];
-                }, 1000);
+        if (guess === this.password) {
+            this.gameStarted = false;
+            this.stopTimer();
+            this.saveScore();
+            setTimeout(() => {
+                this.showWinScreen();
+            }, 500);
+        } else {
+            // Show feedback
+            this.showFeedback(guess);
+            passwordInput.value = '';
+            passwordInput.focus();
+        }
+    }
+
+    showFeedback(guess) {
+        const feedbackContainer = document.getElementById('feedbackContainer');
+        if (!feedbackContainer) return;
+
+        let correctPositions = 0;
+        let correctDigits = 0;
+        
+        // Check correct positions
+        for (let i = 0; i < 4; i++) {
+            if (guess[i] === this.password[i]) {
+                correctPositions++;
             }
         }
+        
+        // Check correct digits in wrong positions
+        const passwordDigits = this.password.split('');
+        const guessDigits = guess.split('');
+        
+        for (let digit of guessDigits) {
+            if (passwordDigits.includes(digit)) {
+                correctDigits++;
+                passwordDigits.splice(passwordDigits.indexOf(digit), 1);
+            }
+        }
+        
+        const feedbackElement = document.createElement('div');
+        feedbackElement.className = 'feedback-item';
+        feedbackElement.innerHTML = `
+            <div class="guess-attempt">Attempt ${this.attempts}: ${guess}</div>
+            <div class="feedback-details">
+                <span class="correct-position">🎯 ${correctPositions} correct positions</span>
+                <span class="correct-digits">✅ ${correctDigits} correct digits</span>
+            </div>
+        `;
+        
+        feedbackContainer.insertBefore(feedbackElement, feedbackContainer.firstChild);
+        
+        // Keep only last 5 attempts visible
+        const feedbackItems = feedbackContainer.querySelectorAll('.feedback-item');
+        if (feedbackItems.length > 5) {
+            feedbackItems[feedbackItems.length - 1].remove();
+        }
+    }
+
+    saveScore() {
+        const scores = JSON.parse(localStorage.getItem('passwordChallengeScores') || '[]');
+        const newScore = {
+            name: this.playerName,
+            attempts: this.attempts,
+            time: this.timeElapsed,
+            date: new Date().toISOString()
+        };
+        
+        scores.push(newScore);
+        
+        // Sort by attempts (fewer is better), then by time
+        scores.sort((a, b) => {
+            if (a.attempts === b.attempts) {
+                return a.time - b.time;
+            }
+            return a.attempts - b.attempts;
+        });
+        
+        // Keep only top 10 scores
+        const topScores = scores.slice(0, 10);
+        localStorage.setItem('passwordChallengeScores', JSON.stringify(topScores));
+        
+        this.displayLeaderboard();
+    }
+
+    displayLeaderboard() {
+        const scores = JSON.parse(localStorage.getItem('passwordChallengeScores') || '[]');
+        const leaderboardElement = document.getElementById('leaderboardList');
+        if (!leaderboardElement) return;
+
+        leaderboardElement.innerHTML = '';
+        
+        if (scores.length === 0) {
+            leaderboardElement.innerHTML = '<li class="leaderboard-item">No scores yet! Be the first to play!</li>';
+            return;
+        }
+
+        scores.forEach((score, index) => {
+            const listItem = document.createElement('li');
+            listItem.className = 'leaderboard-item';
+            listItem.innerHTML = `
+                <span class="rank">#${index + 1}</span>
+                <span class="name">${score.name}</span>
+                <span class="stats">${score.attempts} attempts • ${this.formatTime(score.time)}</span>
+            `;
+            leaderboardElement.appendChild(listItem);
+        });
     }
 
     startTimer() {
@@ -234,128 +285,108 @@ class MemoryGame {
     }
     
     updateDisplay() {
-        const movesElement = document.getElementById('movesCount');
+        const attemptsElement = document.getElementById('attemptsCount');
         const timeElement = document.getElementById('timeCount');
         
-        if (movesElement) movesElement.textContent = this.moves;
+        if (attemptsElement) attemptsElement.textContent = this.attempts;
         if (timeElement) timeElement.textContent = this.formatTime(this.timeElapsed);
     }
     
     showStartScreen() {
         const startScreen = document.getElementById('startScreen');
         const nameScreen = document.getElementById('nameScreen');
-        const gameGrid = document.getElementById('gameGrid');
+        const gameContent = document.getElementById('gameContent');
         const winScreen = document.getElementById('winScreen');
         
         if (startScreen) startScreen.style.display = 'block';
         if (nameScreen) nameScreen.style.display = 'none';
-        if (gameGrid) gameGrid.style.display = 'none';
+        if (gameContent) gameContent.style.display = 'none';
         if (winScreen) winScreen.style.display = 'none';
     }
     
-    showGameGrid() {
+    showGameContent() {
         const startScreen = document.getElementById('startScreen');
         const nameScreen = document.getElementById('nameScreen');
-        const gameGrid = document.getElementById('gameGrid');
+        const gameContent = document.getElementById('gameContent');
         const winScreen = document.getElementById('winScreen');
         
         if (startScreen) startScreen.style.display = 'none';
         if (nameScreen) nameScreen.style.display = 'none';
-        if (gameGrid) gameGrid.style.display = 'grid';
+        if (gameContent) gameContent.style.display = 'block';
         if (winScreen) winScreen.style.display = 'none';
+        
+        // Focus on password input
+        setTimeout(() => {
+            const passwordInput = document.getElementById('passwordInput');
+            if (passwordInput) passwordInput.focus();
+        }, 100);
     }
     
     showWinScreen() {
         const startScreen = document.getElementById('startScreen');
         const nameScreen = document.getElementById('nameScreen');
-        const gameGrid = document.getElementById('gameGrid');
+        const gameContent = document.getElementById('gameContent');
         const winScreen = document.getElementById('winScreen');
         
         if (startScreen) startScreen.style.display = 'none';
         if (nameScreen) nameScreen.style.display = 'none';
-        if (gameGrid) gameGrid.style.display = 'none';
+        if (gameContent) gameContent.style.display = 'none';
         if (winScreen) winScreen.style.display = 'block';
         
-        const finalMovesElement = document.getElementById('finalMoves');
+        const finalAttemptsElement = document.getElementById('finalAttempts');
         const finalTimeElement = document.getElementById('finalTime');
         const playerNameElement = document.getElementById('winPlayerName');
+        const finalPasswordElement = document.getElementById('finalPassword');
         
-        if (finalMovesElement) finalMovesElement.textContent = this.moves;
+        if (finalAttemptsElement) finalAttemptsElement.textContent = this.attempts;
         if (finalTimeElement) finalTimeElement.textContent = this.formatTime(this.timeElapsed);
         if (playerNameElement) playerNameElement.textContent = this.playerName;
-    }
-
-    async saveScore() {
-        const scoreData = {
-            name: this.playerName,
-            moves: this.moves,
-            time: this.timeElapsed,
-            date: new Date().toISOString()
-        };
-
-        try {
-            const response = await fetch('/api/leaderboard', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(scoreData),
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to save score');
-            }
-            
-            this.loadLeaderboard();
-        } catch (error) {
-            console.error('Error saving score:', error);
-        }
-    }
-
-    async loadLeaderboard() {
-        try {
-            const response = await fetch('/api/leaderboard');
-            if (!response.ok) {
-                throw new Error('Failed to fetch leaderboard');
-            }
-            const leaderboardData = await response.json();
-            const scores = leaderboardData.scores || [];
-            this.displayLeaderboard(scores);
-        } catch (error) {
-            console.error('Error loading leaderboard:', error);
-            this.displayLeaderboard([]);
-        }
-    }
-
-    displayLeaderboard(scores) {
-        const leaderboardElement = document.getElementById('leaderboardList');
-        if (!leaderboardElement) return;
-
-        leaderboardElement.innerHTML = '';
+        if (finalPasswordElement) finalPasswordElement.textContent = this.password;
         
-        if (scores.length === 0) {
-            leaderboardElement.innerHTML = '<li class="leaderboard-item">No scores yet! Be the first to play!</li>';
-            return;
-        }
+        // Show answers after winning
+        this.showAnswers();
+    }
 
-        scores.forEach((score, index) => {
-            const listItem = document.createElement('li');
-            listItem.className = 'leaderboard-item';
-            listItem.innerHTML = `
-                <span class="rank">#${index + 1}</span>
-                <span class="name">${score.name}</span>
-                <span class="stats">${score.moves} moves • ${this.formatTime(score.time)}</span>
-            `;
-            leaderboardElement.appendChild(listItem);
-        });
+    showAnswers() {
+        const answersContainer = document.getElementById('answersContainer');
+        if (answersContainer) {
+            answersContainer.innerHTML = '';
+            
+            const answersTitle = document.createElement('h3');
+            answersTitle.textContent = '💡 Correct Answers:';
+            answersTitle.style.color = '#137333';
+            answersTitle.style.marginBottom = '1rem';
+            answersContainer.appendChild(answersTitle);
+            
+            this.selectedHints.forEach((hint, index) => {
+                const answerElement = document.createElement('div');
+                answerElement.className = 'answer-item';
+                answerElement.style.cssText = `
+                    background: #f8f9fa;
+                    border-radius: 8px;
+                    padding: 12px 16px;
+                    margin-bottom: 8px;
+                    border-left: 3px solid #137333;
+                `;
+                answerElement.innerHTML = `
+                    <div style="font-weight: 500; color: #202124; margin-bottom: 4px;">
+                        Position ${index + 1}: ${hint.hint}
+                    </div>
+                    <div style="font-weight: 600; color: #137333;">
+                        Answer: ${hint.digit}
+                    </div>
+                `;
+                answersContainer.appendChild(answerElement);
+            });
+        }
     }
 }
 
 // Initialize the game when the page loads
 document.addEventListener('DOMContentLoaded', () => {
-    new MemoryGame();
+    new PasswordGame();
     
-    // Simplified animations for the new layout
+    // Simple fade-in animation for elements
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -363,22 +394,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 entry.target.style.transform = 'translateY(0)';
             }
         });
-});
+    });
+    
     document.querySelectorAll('.fade-in').forEach(el => {
         el.style.opacity = '0';
         el.style.transform = 'translateY(20px)';
         el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
         observer.observe(el);
-    });
-    
-    // Enhanced hover effects for simple cards
-    document.querySelectorAll('.simple-card').forEach(card => {
-        card.addEventListener('mouseenter', () => {
-            card.style.transform = 'translateY(-4px) scale(1.02)';
-        });
-        
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = 'translateY(0) scale(1)';
-        });
     });
 });
